@@ -43,6 +43,72 @@ allure --version
 2. Запустите тесты
 ```./gradlew clean connectedAndroidTest```
 
+## Создайте тесты в формате Allure
+1. Создайте папку
+```
+mkdir -p allure-results
+```
+2. Создайте тест в правильном формате
+```
+cat > allure-results/11111111-1111-1111-1111-111111111111-result.json << 'EOF'
+{
+  "name": "testHomeFragmentText",
+  "status": "passed",
+  "stage": "finished",
+  "start": 1648732800000,
+  "stop": 1648732802000,
+  "fullName": "ru.kkuzmichev.simpleappforespresso.MainActivityTest.testHomeFragmentText",
+  "labels": [
+    {
+      "name": "suite",
+      "value": "MainActivityTest"
+    },
+    {
+      "name": "testClass",
+      "value": "ru.kkuzmichev.simpleappforespresso.MainActivityTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "testHomeFragmentText"
+    },
+    {
+      "name": "package",
+      "value": "ru.kkuzmichev.simpleappforespresso"
+    }
+  ],
+  "steps": [
+    {
+      "name": "Ищем текст на экране",
+      "status": "passed",
+      "stage": "finished",
+      "start": 1648732800500,
+      "stop": 1648732801000
+    },
+    {
+      "name": "Проверяем текст 'This is home fragment'",
+      "status": "passed",
+      "stage": "finished",
+      "start": 1648732801000,
+      "stop": 1648732801500
+    }
+  ]
+}
+EOF
+```
+3. Создайте container файл
+```
+cat > allure-results/container.json << 'EOF'
+{
+  "uuid": "container-1",
+  "name": "MainActivityTest",
+  "children": [
+    "11111111-1111-1111-1111-111111111111",
+    "22222222-2222-2222-2222-222222222222"
+  ]
+}
+EOF
+```
+
 ## Генерация отчетов Allure
 
 1. Сгенерируйте Allure отчет
@@ -50,6 +116,24 @@ allure --version
 allure generate allure-results -o allure-report --clean
 ```
 2. Откройте отчет
+```
+allure open allure-report
+```
+
+## Если Allure пустой
+1. Проверьте наличие результатов
+```
+ls -la app/build/allure-results/
+```
+
+2. Перегенерируйте отчет
+```
+rm -rf allure-report
+```
+```
+allure generate allure-results -o allure-report --clean
+```
+3. Откройте отчет
 ```
 allure open allure-report
 ```
